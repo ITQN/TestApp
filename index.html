@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tham gia TPEC</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f9; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        input[type="email"] { width: 90%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 6px; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        
+        /* Ẩn lúc đầu, hiện sau khi nhập xong */
+        #success-area { display: none; margin-top: 20px; border-top: 2px solid #eee; pt: 20px; }
+        .btn-step { display: block; background: #34a853; color: white; text-decoration: none; padding: 15px; margin: 10px 0; border-radius: 8px; font-weight: bold; font-size: 1.1rem; }
+        .btn-step.secondary { background: #fbbc05; color: #000; }
+        .instruction { font-size: 0.9rem; color: #555; margin-bottom: 5px; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div id="form-area">
+        <h2>🚀 Đăng ký app TPEC</h2>
+        <p>Nhập email để tham gia trải nghiệm ứng dụng</p>
+        <form id="testForm">
+            <input type="email" name="email" id="emailInput" placeholder="Gmail của bạn" required>
+            <button type="submit" id="submitBtn">Gửi yêu cầu</button>
+        </form>
+    </div>
+
+    <div id="success-area">
+        <h3 style="color: #1a73e8;">🎉 Sắp xong rồi!</h3>
+        <p>Bạn cần thực hiện <b>2 bước</b> dưới đây để có quyền tải app:</p>
+        
+        <div class="instruction">Bước 1: Tham gia nhóm</div>
+        <a href="https://groups.google.com/g/tpectester" target="_blank" class="btn-step">1. Gia nhập Google Group</a>
+        
+        <div class="instruction">Bước 2: Xác nhận làm Tester</div>
+        <a href="https://play.google.com/apps/testing/com.itqn.xndtp" target="_blank" class="btn-step secondary">2. Trở thành Tester (Play Store)</a>
+        
+        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">Sau khi bấm cả 2 nút trên, bạn có thể tải app trên Google Play.</p>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('testForm');
+    const formArea = document.getElementById('form-area');
+    const successArea = document.getElementById('success-area');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyLenmoIxuSXZYDQ1I2-ghV-E1BhaY01qrdbS3jobnLblI93J45G2sXxoTxs1LhiZz-ZA/exec'; // Dán link Apps Script của bạn vào đây
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Đang xử lý...";
+
+        fetch(scriptURL, { 
+            method: 'POST', 
+            body: new FormData(form),
+            mode: 'no-cors' 
+        })
+        .then(() => {
+            // Ẩn form và hiện 2 nút bấm
+            formArea.style.display = 'none';
+            successArea.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Lỗi!', error.message);
+            alert('Có lỗi xảy ra, vui lòng thử lại.');
+            submitBtn.disabled = false;
+        });
+    });
+</script>
+
+</body>
+</html>
